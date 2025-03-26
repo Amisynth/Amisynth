@@ -12,9 +12,9 @@ Para instalar este paquete, usa `pip`:
 
 ```bash
 pip install Amisynth
+```
 
-
-# Codigo Basico
+## Codigo Basico
 
 ```python
 
@@ -29,13 +29,13 @@ bot.new_commands(name="test",
 bot.run("""TOKEN BOT""")
 
 
-# Codigo con Cogs
+##  Codigo con Cogs
 
 ```python
 AmiClient(prefix="!", cogs="carpeta de cogs")
 ```
 
-# Eventos
+##  Eventos
 
 
 ```python
@@ -49,7 +49,7 @@ bot.new_event(name="$onMessage",
 bot.run("""TOKEN BOT""")
 ```
 
-# Cog Exmaple
+##  Cog Exmaple
 
 ```python
 # cog/test.py
