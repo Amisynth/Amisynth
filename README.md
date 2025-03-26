@@ -33,7 +33,7 @@ bot.run("""TOKEN BOT""")
 
 ```python
 AmiClient(prefix="!", cogs="carpeta de cogs")
-
+```
 
 # Eventos
 
@@ -47,7 +47,7 @@ bot.new_event(name="$onMessage",
                  code="Hi everyone!")
 
 bot.run("""TOKEN BOT""")
-
+```
 
 # Cog Exmaple
 
@@ -57,4 +57,4 @@ def setup(bot):
     bot.new_command(name="test",
                  type="text",
                  code="Hi everyone!")
-   
+``` 
