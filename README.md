@@ -14,6 +14,47 @@ Para instalar este paquete, usa `pip`:
 pip install Amisynth
 
 
-# Bot Ejemplo
+# Codigo Basico
 
-```bash
+```python
+
+from Amysinth.client import AmiClient
+
+bot = AmiClient(prefix="!")
+
+bot.new_commands(name="test",
+                 type="text",
+                 code="Hi everyone!")
+
+bot.run("""TOKEN BOT""")
+
+
+# Codigo con Cogs
+
+```python
+AmiClient(prefix="!", cogs="carpeta de cogs")
+
+
+# Eventos
+
+
+```python
+from Amysinth.client import AmiClient
+
+bot = AmiClient(prefix="!")
+
+bot.new_event(name="$onMessage",
+                 code="Hi everyone!")
+
+bot.run("""TOKEN BOT""")
+
+
+# Cog Exmaple
+
+```python
+# cog/test.py
+def setup(bot):
+    bot.new_command(name="test",
+                 type="text",
+                 code="Hi everyone!")
+   
