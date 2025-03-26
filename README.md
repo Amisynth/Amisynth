@@ -27,7 +27,7 @@ bot.new_commands(name="test",
                  code="Hi everyone!")
 
 bot.run("""TOKEN BOT""")
-
+```
 
 ##  Codigo con Cogs
 
