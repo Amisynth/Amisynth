@@ -10,6 +10,11 @@ buttons = []  # Si también necesitas manejar botones, puedes añadir la lógica
 choices_slash = {}
 
 
+json_storage = {}
+
+
+menu_options = {}
+
 
 
 async def utils():

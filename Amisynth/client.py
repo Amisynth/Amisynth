@@ -22,7 +22,9 @@ class AmiClient(commands.Bot):
             "$onReady": [],
             "$onReactionAdd": [],  # Evento de agregar reacción
             "$onReactionRemove": [],  # Evento de remover reacción
-            "$onInteraction": []
+            "$onInteraction": [],
+            "$onMessageEdit": [],
+            "$onMessageDelete": []
         }
     
     async def setup_hook(self):
@@ -56,7 +58,7 @@ class AmiClient(commands.Bot):
             # Construir el View si hay botones
             view = discord.ui.View()
             if botones:
-                for boton in botones:
+                for boton in botones:  # Extraer la fila y el botón
                     view.add_item(boton)
 
             
@@ -120,7 +122,7 @@ class AmiClient(commands.Bot):
         result = await xfox.parse({repr(code)}, del_empty_lines=True, **kwargs)
 
         texto = result
-        botones, embeds = [], []
+        botones, embeds = await utils.utils()
         view = discord.ui.View()
         if botones:
             for boton in botones:
@@ -149,45 +151,74 @@ class AmiClient(commands.Bot):
 
 
 
-    def new_event(self, tipo, codigo):
-        if tipo not in self.eventos_personalizados:
-            self.eventos_personalizados[tipo] = []  # Inicializar si no existe
-        self.eventos_personalizados[tipo].append(codigo)  # Guardar múltiples eventos
+    def new_event(self, tipo, codigo, overwrite=False):
+        if tipo not in self.eventos_personalizados or overwrite:
+            self.eventos_personalizados[tipo] = []  # Reiniciar si se sobrescribe
+        self.eventos_personalizados[tipo].append(codigo)
 
-    async def ejecutar_eventos(self, tipo, ctx_message_env=None, ctx_reaction_env=None, ctx_reaction_remove_env=None, ctx_interaction_env=None):
+    async def ejecutar_eventos(self, tipo, 
+                               ctx_message_env=None, 
+                               ctx_reaction_env=None, 
+                               ctx_reaction_remove_env=None, 
+                               ctx_interaction_env=None, 
+                               ctx_message_edit_env=None, 
+                               ctx_message_delete_env=None):
+        
+
         if tipo in self.eventos_personalizados:
             for codigo in self.eventos_personalizados[tipo]:
                 kwargs = {
                     "ctx_message_env": ctx_message_env,
                     "ctx_reaction_env": ctx_reaction_env,
                     "ctx_reaction_remove_env": ctx_reaction_remove_env,
-                    "ctx_interaction_env": ctx_interaction_env  # 👈 Agregado aquí
+                    "ctx_interaction_env": ctx_interaction_env,  # 👈 Agregado aquí
+                    "ctx_message_edit_env": ctx_message_edit_env,
+                    "ctx_message_delete_env": ctx_message_delete_env
                 }
                 result = await xfox.parse(codigo, del_empty_lines=True, **kwargs)
-                botones = utils.buttons
+                botones, embeds = await utils.utils()
                 view=None
                 if botones:
                     # Crear un View para los botones
                     view = discord.ui.View()
                     for boton in botones:
                         view.add_item(boton)  # Agregar los botones al View
-                if result:
-                    if ctx_message_env:
-                        await ctx_message_env.channel.send(result, view=view if view else None)
 
-                    elif ctx_reaction_env:
-                        channel = self.get_channel(ctx_reaction_env.channel_id, )
-                        if channel:
-                            await channel.send(result, view=view if view else None)
+                if ctx_message_env:
+                    await ctx_message_env.channel.send(result, 
+                                                        view=view if view else None,  
+                                                        embeds=embeds if embeds else [])
+
+                elif ctx_reaction_env:
+                    channel = self.get_channel(ctx_reaction_env.channel_id, )
+                    if channel:
+                        await channel.send(result, 
+                                            view=view if view else None,
+                                            embeds=embeds if embeds else [])
 
 
-                    elif ctx_reaction_remove_env:
-                        channel = self.get_channel(ctx_reaction_remove_env.channel_id)
-                        if channel:
-                            await channel.send(result, view=view if view else None)
+                elif ctx_reaction_remove_env:
+                    channel = self.get_channel(ctx_reaction_remove_env.channel_id)
+                    if channel:
+                        await channel.send(result, 
+                                            view=view,
+                                            embeds=embeds if embeds else [])
 
-                    elif ctx_interaction_env:
-                            await ctx_interaction_env.response.edit_message(content=result, view=view if view else None)  # 👈 Edita el mensaje original si ya hay respuesta
+                elif ctx_interaction_env:
+                    await ctx_interaction_env.response.edit_message(content=result, 
+                                                                    view=view,
+                                                                    embeds=embeds)
+
+                elif ctx_message_edit_env:
+                    before, after = ctx_message_edit_env
+                    await before.channel.send(content=result, 
+                                              view=view, 
+                                              embeds=embeds)
+
+                elif ctx_message_delete_env:
+                    await ctx_message_delete_env.channel.send(content=result, 
+                                                                    view=view,
+                                                                    embeds=embeds)
 
     async def on_message(self, ctx_message_env):
         if ctx_message_env.author.bot:
@@ -224,3 +255,13 @@ class AmiClient(commands.Bot):
             return
     
         await self.ejecutar_eventos("$onInteraction", ctx_interaction_env=ctx_interaction_env)
+
+    async def on_message_edit(self, before, after):
+        if before.author.bot:  # Evita que el bot procese sus propios mensajes
+            return
+        await self.ejecutar_eventos("$onMessageEdit", ctx_message_edit_env=(before, after))
+        
+    async def on_message_delete(self, ctx_message_delete_env):
+        if ctx_message_delete_env.author.bot:
+            return
+        await self.ejecutar_eventos("$onMessageDelete", ctx_message_delete_env=ctx_message_delete_env)

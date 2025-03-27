@@ -9,6 +9,8 @@ async def channelID(nombre: str = None, *args, **kwargs):
     ctx_reaction_env = kwargs.get("ctx_reaction_env")
     ctx_reaction_remove_env = kwargs.get("ctx_reaction_remove_env")
     ctx_interaction_env = kwargs.get("ctx_interaction_env")
+    ctx_message_edit_env = kwargs.get("ctx_message_edit_env")
+    ctx_message_delete_env = kwargs.get("ctx_message_delete_env")
 
     # Obtener el servidor (guild) desde cualquier contexto disponible
     guild = (
@@ -17,7 +19,9 @@ async def channelID(nombre: str = None, *args, **kwargs):
         ctx_slash_env.guild if ctx_slash_env else
         ctx_reaction_env.message.guild if ctx_reaction_env else
         ctx_reaction_remove_env.message.guild if ctx_reaction_remove_env else
-        ctx_interaction_env.guild if ctx_interaction_env else None
+        ctx_interaction_env.guild if ctx_interaction_env else
+        ctx_message_edit_env[0].guild if ctx_message_edit_env else
+        ctx_message_delete_env.guild if ctx_message_delete_env else None
     )
 
     # Si no hay servidor, retornar vacío
@@ -36,7 +40,9 @@ async def channelID(nombre: str = None, *args, **kwargs):
         ctx_slash_env.channel_id if ctx_slash_env else
         ctx_reaction_env.message.channel.id if ctx_reaction_env else
         ctx_reaction_remove_env.message.channel.id if ctx_reaction_remove_env else
-        ctx_interaction_env.channel.id if ctx_interaction_env and ctx_interaction_env.channel else None
+        ctx_interaction_env.channel.id if ctx_interaction_env and ctx_interaction_env.channel else
+        ctx_message_edit_env[0].channel.id if ctx_message_edit_env else 
+        ctx_message_delete_env.channel.id if ctx_message_delete_env else None
     )
 
     return str(channel_id) if channel_id else ""
