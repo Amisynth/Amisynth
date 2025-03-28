@@ -41,7 +41,7 @@ AmiClient(prefix="!", cogs="carpeta de cogs")
 
 
 ```python
-from Amysinth.client import AmiClient
+from Amisynth.client import AmiClient
 
 bot = AmiClient(prefix="!")
 
