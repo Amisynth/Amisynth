@@ -24,7 +24,7 @@ class AmiClient(commands.Bot):
             "$onReactionRemove": [],  # Evento de remover reacción
             "$onInteraction": [],
             "$onMessageEdit": [],
-            "$onMessageDelete": []
+            "$onMessageDelete": [],
         }
     
     async def setup_hook(self):
@@ -162,7 +162,8 @@ class AmiClient(commands.Bot):
                                ctx_reaction_remove_env=None, 
                                ctx_interaction_env=None, 
                                ctx_message_edit_env=None, 
-                               ctx_message_delete_env=None):
+                               ctx_message_delete_env=None,
+                               ctx_member_join_env=None):
         
 
         if tipo in self.eventos_personalizados:
@@ -173,7 +174,7 @@ class AmiClient(commands.Bot):
                     "ctx_reaction_remove_env": ctx_reaction_remove_env,
                     "ctx_interaction_env": ctx_interaction_env,  # 👈 Agregado aquí
                     "ctx_message_edit_env": ctx_message_edit_env,
-                    "ctx_message_delete_env": ctx_message_delete_env
+                    "ctx_message_delete_env": ctx_message_delete_env,
                 }
                 result = await xfox.parse(codigo, del_empty_lines=True, **kwargs)
                 botones, embeds = await utils.utils()
@@ -220,6 +221,7 @@ class AmiClient(commands.Bot):
                                                                     view=view,
                                                                     embeds=embeds)
 
+
     async def on_message(self, ctx_message_env):
         if ctx_message_env.author.bot:
             return
@@ -265,3 +267,4 @@ class AmiClient(commands.Bot):
         if ctx_message_delete_env.author.bot:
             return
         await self.ejecutar_eventos("$onMessageDelete", ctx_message_delete_env=ctx_message_delete_env)
+

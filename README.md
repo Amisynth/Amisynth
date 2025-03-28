@@ -20,11 +20,11 @@ pip install Amisynth
 
 ```python
 
-from Amysinth.client import AmiClient
+from Amisynth.client import AmiClient
 
 bot = AmiClient(prefix="!")
 
-bot.new_commands(name="test",
+bot.new_command(name="test",
                  type="text",
                  code="Hi everyone!")
 
