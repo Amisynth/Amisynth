@@ -1,6 +1,7 @@
 import xfox
 import discord
-from Amisynth.utils import buttons
+from Amisynth.utils import buttons, mensaje_id_global
+
 
 # Contador de fila global
 row_counter = 0  
@@ -8,8 +9,16 @@ row_counter = 0
 @xfox.addfunc(xfox.funcs)
 async def addButton(new_row: str, button_id: str, label: str, style: str, *args, **kwargs):
     """Crea múltiples botones interactivos y devuelve una lista de objetos de botones creados."""
-    ctx = kwargs["ctx_command"] or kwargs["ctx_interaction_env"]
-
+    if "ctx_command" in kwargs:
+        ctx=kwargs["ctx_command"]
+    if "ctx_join_member_env" in kwargs:
+        ctx=kwargs["ctx_join_member_env"]
+    if "ctx_remove_member_env" in kwargs:
+        ctx=kwargs["ctx_remove_member_env"]
+    if "ctx_message_edit_env" in kwargs:
+        ctx=kwargs["ctx_message_edit_env"]
+    if "ctx_message_delete_env" in kwargs:
+        ctx=kwargs["ctx_message_delete_env"]
 
     global row_counter  # Para modificar el contador de fila
 
@@ -58,16 +67,23 @@ async def addButton(new_row: str, button_id: str, label: str, style: str, *args,
 
     if message_id:
         message_id = int(message_id)  # Convertir a número
-        channel = ctx.channel  # Obtener el canal
-        message = await channel.fetch_message(message_id)  # Obtener el mensaje
-        if message.components:
-            view = discord.ui.View.from_message(message)  # Recuperar los botones existentes
-        else:
-            view = discord.ui.View()  # Crear una nueva vista si no hay botones
 
-        view.add_item(button)  # Agregar el botón sin eliminar los anteriores
-        await message.edit(view=view)  # Editar el mensaje con la nueva vista
-        return ""
+        for channel in ctx.guild.text_channels:
+            try:
+                message = await channel.fetch_message(message_id)  # Obtener el mensaje
+                if message.components:
+                    view = discord.ui.View.from_message(message)  # Recuperar los botones existentes
+                else:
+                    view = discord.ui.View()  # Crear una nueva vista si no hay botones
+                    view.add_item(button)  # Agregar el botón sin eliminar los anteriores
+                    await message.edit(view=view)  # Editar el mensaje con la nueva vista
+                    return ""
+            except discord.NotFound:
+                continue  # Si el mensaje no se encuentra, continuar con el siguiente canal
+            except discord.Forbidden:
+                continue  # Si no tienes permisos para ver el canal, continuar con el siguiente canal
+            except discord.HTTPException as e:
+                continue  # Manejar errores HTTP y continuar con el siguiente canal
     
     buttons.append(button)
     return ""

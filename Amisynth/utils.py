@@ -15,7 +15,7 @@ json_storage = {}
 
 menu_options = {}
 
-
+mensaje_id_global = None
 
 async def utils():
     nuevos_embeds = []  # Usamos una lista nueva para los embeds procesados

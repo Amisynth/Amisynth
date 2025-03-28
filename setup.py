@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='Amisynth',  
-    version='0.0.7',    
+    version='0.1.0',    
     packages=find_packages(include=["Amisynth", "Amisynth.*"]),    
     py_modules=["Amisynth"],  # Agrega esto si solo tienes archivos sueltos sin una estructura de paquete
     install_requires=["discord.py", "asyncio", "xfox"],  

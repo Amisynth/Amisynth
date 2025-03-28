@@ -25,6 +25,8 @@ class AmiClient(commands.Bot):
             "$onInteraction": [],
             "$onMessageEdit": [],
             "$onMessageDelete": [],
+            "$onJoinMember": [],
+            "$onLeaveMember": []
         }
     
     async def setup_hook(self):
@@ -163,7 +165,8 @@ class AmiClient(commands.Bot):
                                ctx_interaction_env=None, 
                                ctx_message_edit_env=None, 
                                ctx_message_delete_env=None,
-                               ctx_member_join_env=None):
+                               ctx_join_member_env=None,
+                               ctx_remove_member_env=None):
         
 
         if tipo in self.eventos_personalizados:
@@ -175,6 +178,8 @@ class AmiClient(commands.Bot):
                     "ctx_interaction_env": ctx_interaction_env,  # 👈 Agregado aquí
                     "ctx_message_edit_env": ctx_message_edit_env,
                     "ctx_message_delete_env": ctx_message_delete_env,
+                    "ctx_join_member_env": ctx_join_member_env,
+                    "ctx_remove_member_env": ctx_remove_member_env
                 }
                 result = await xfox.parse(codigo, del_empty_lines=True, **kwargs)
                 botones, embeds = await utils.utils()
@@ -241,9 +246,16 @@ class AmiClient(commands.Bot):
         except Exception as e:
             print(f"Error al sincronizar slash commands: {e}")
 
+    async def on_member_join(self, member: discord.Member):
+        await self.ejecutar_eventos("$onJoinMember", ctx_join_member_env=member)
+    
+    async def on_member_remove(self, member: discord.Member):
+        await self.ejecutar_eventos("$onLeaveMember", ctx_remove_member_env=member)
 
 
+        
     async def on_raw_reaction_add(self, ctx_reaction_env):
+
         """Maneja cuando un usuario añade una reacción."""
         await self.ejecutar_eventos("$onReactionAdd", ctx_reaction_env=ctx_reaction_env)
 
@@ -267,4 +279,3 @@ class AmiClient(commands.Bot):
         if ctx_message_delete_env.author.bot:
             return
         await self.ejecutar_eventos("$onMessageDelete", ctx_message_delete_env=ctx_message_delete_env)
-

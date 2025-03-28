@@ -1,33 +1,35 @@
-import xfox
-import asyncio
+import discord
+from discord.ext import commands
 
-# JSON de prueba
-json_storage = {"name": [{"user": ["Alice", "Bob"]}, {"user": ["Charlie", "Dave"]}]}
+intents = discord.Intents().all()
+intents.members = True  # Asegúrate de habilitar los intents de miembros
 
-@xfox.addfunc(xfox.funcs)
-async def json(*args, **kwargs):
+# Crea una instancia de bot
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+# Evento on_member_join
+@bot.event
+async def on_member_join(member):
+    # Este evento se dispara cuando un nuevo miembro se une al servidor
+    print(f"{member.name} se unió al servidor!")
+
+    # Usa el ID de canal para obtener el canal en lugar del nombre
+    channel_id = 1354997612234674226  # Reemplaza con el ID de canal al que quieres enviar el mensaje
+    channel = bot.get_channel(channel_id)
+
+    if channel:
+        await channel.send(f"¡Bienvenido al servidor, {member.mention}! 🎉")
+
+    # Si quieres dar un mensaje de bienvenida al canal privado del miembro
     try:
-        data = json_storage  # Inicia con el JSON base
+        await member.send(f"¡Hola {member.name}! Gracias por unirte al servidor.")
+    except discord.Forbidden:
+        print(f"No se pudo enviar un DM a {member.name}.")
 
-        for clave in args:
-            if isinstance(data, dict) and clave in data:
-                data = data[clave]  # Acceder a clave en diccionario
-            elif isinstance(data, list):
-                try:
-                    index = int(clave)  # Convertir clave a entero si es índice
-                    data = data[index]  # Acceder a índice en lista
-                except ValueError:
-                    return f""
-                    
-                except IndexError:
-                    return f""
-            else:
-                return f""
-        
-        return data  # Devuelve el resultado final
-    except Exception as e:
-        raise ValueError(f"Error inesperado: {str(e)}")
+# Evento on_ready
+@bot.event
+async def on_ready():
+    print(f"Bot conectado como {bot.user}")
 
-# Pruebas con diferentes estructuras
-print(asyncio.run(xfox.parse("$json[name;0;user;0]")))  # Alice
-print(asyncio.run(xfox.parse("$json[name;1;user;1]")))  #
+# Inicia el bot con tu token
+bot.run('')

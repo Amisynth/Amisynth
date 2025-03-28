@@ -8,4 +8,4 @@ async def repeatMessage(count: str, message: str, *args, **kwargs):
             return ""
         return " ".join([message] * count)
     except ValueError:
-        return "Invalid count value"
+        raise ValueError("Error, en argumento 1, repeatMesssage, numero no vlaido.")

@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: Amisynth
-Version: 0.0.7
+Version: 0.1.0
 Summary: Descripción de mi paquete
 Home-page: https://github.com/tu_usuario/mi_paquete
 Author: Amisinth
@@ -28,8 +28,10 @@ Dynamic: summary
 Amisynth es un paquete para integrar funciones personalizadas en Discord.
 
 ![PyPI](https://img.shields.io/pypi/v/amisynth)
+[![PyPI Downloads](https://static.pepy.tech/badge/amisynth)](https://pepy.tech/projects/amisynth)
 ![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)
 ![Docs](https://img.shields.io/badge/docs-passing-brightgreen)
+
 
 ## Instalación
 
@@ -43,11 +45,11 @@ pip install Amisynth
 
 ```python
 
-from Amysinth.client import AmiClient
+from Amisynth.client import AmiClient
 
 bot = AmiClient(prefix="!")
 
-bot.new_commands(name="test",
+bot.new_command(name="test",
                  type="text",
                  code="Hi everyone!")
 
@@ -64,7 +66,7 @@ AmiClient(prefix="!", cogs="carpeta de cogs")
 
 
 ```python
-from Amysinth.client import AmiClient
+from Amisynth.client import AmiClient
 
 bot = AmiClient(prefix="!")
 

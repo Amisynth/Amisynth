@@ -10,8 +10,6 @@ Amisynth.egg-info/requires.txt
 Amisynth.egg-info/top_level.txt
 Amisynth/Collector/__init__.py
 Amisynth/Functions/__init__.py
-Amisynth/Functions/message.py
-Amisynth/Functions/repeatMessage.py
 Amisynth/Functions/storage.py
 Amisynth/Functions/sum.py
 Amisynth/Functions/Buttons/__init__.py
@@ -38,6 +36,9 @@ Amisynth/Functions/JSON/jsonSetString.py
 Amisynth/Functions/JSON/jsonUnClear.py
 Amisynth/Functions/JSON/jsonUnSet.py
 Amisynth/Functions/Messages/__init__.py
+Amisynth/Functions/Messages/message.py
+Amisynth/Functions/Messages/repeatMessage.py
+Amisynth/Functions/Messages/sendMessage.py
 Amisynth/Functions/Messages/onEditMessage/__init__.py
 Amisynth/Functions/Messages/onEditMessage/editMessageAfter.py
 Amisynth/Functions/Messages/onEditMessage/editMessageBefore.py
