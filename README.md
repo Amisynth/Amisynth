@@ -3,9 +3,10 @@
 Amisynth es un paquete para integrar funciones personalizadas en Discord.
 
 ![PyPI](https://img.shields.io/pypi/v/amisynth)
+[![PyPI Downloads](https://static.pepy.tech/badge/amisynth)](https://pepy.tech/projects/amisynth)
 ![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)
 ![Docs](https://img.shields.io/badge/docs-passing-brightgreen)
-[![PyPI Downloads](https://static.pepy.tech/badge/amisynth)](https://pepy.tech/projects/amisynth)
+
 
 ## Instalación
 
