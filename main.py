@@ -4,18 +4,13 @@
 from Amisynth.client import AmiClient
 
 
-bot = AmiClient(prefix="!")
-
+bot = AmiClient(prefix="!", 
+                variables_json=True)
 
 bot.new_command("etc", 
-                "text",
+                "text", 
                 """
-Canal ID: $channelID[]
-Author: $authorID[]
-usernae = $username[]
-channels: $channelNames[,]
-categorias: $categorys[,]
-                """)
-
-
+$title[hola;1]
+$eval[$message[-1]]
+""")
 bot.run("")

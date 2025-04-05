@@ -2,7 +2,7 @@ import xfox
 from Amisynth.utils import embeds  # Asumo que embeds es una lista global que estás usando
 
 @xfox.addfunc(xfox.funcs)
-async def color(color: str, indice: int = 1, *args, **kwargs):
+async def color(color: str=None, indice: int = 1, *args, **kwargs):
     """
     Guarda un color en la lista de embeds, con un color específico y un índice opcional.
     Si se especifica el índice, se inserta o actualiza en esa posición. Si no, se agrega en la posición 1.
@@ -10,6 +10,9 @@ async def color(color: str, indice: int = 1, *args, **kwargs):
     :param color: El color en formato hexadecimal (con o sin '#').
     :param indice: El índice opcional del embed (posición en la lista).
     """
+
+    if color is None:
+        raise ValueError(":x: Error argumento color vacio. `$color[?;..]`")
     # Asegurarse de que el color tiene el formato adecuado
     if color.startswith('#'):
         color = color[1:]  # Eliminar el '#' si está presente
@@ -17,9 +20,9 @@ async def color(color: str, indice: int = 1, *args, **kwargs):
         try:
             int(color, 16)  # Comprobar si el color es un número hexadecimal
         except ValueError:
-            return "Error: El color proporcionado no es un código hexadecimal válido."
+            raise ValueError(f"Error: El color proporcionado no es un código hexadecimal válido: $color[{color}]")
     else:
-        return "Error: El color debe ser un código hexadecimal de 6 caracteres."
+        raise ValueError(f"Error El color debe ser un código hexadecimal de 6 caracteres.")
 
     # Crear el embed con solo el color
     embed = {

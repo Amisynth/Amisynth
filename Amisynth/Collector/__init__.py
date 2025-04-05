@@ -1,18 +1,33 @@
 import os
 import importlib.util
 
+import os
+import importlib.util
+
+import os
+import importlib.util
+
 def load_functions():
-    folder = "Amisynth/Functions"
-    # Usamos os.walk() para recorrer todos los subdirectorios
+    """Carga automáticamente todas las funciones de la carpeta 'Functions'."""
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))  
+    folder = os.path.join(base_path, "Functions")  # Accede a `Amisynth/Functions`
+
+    if not os.path.exists(folder):
+        print(f"⚠️ No se encontró la carpeta 'Functions' en {folder}")
+        return  
+
     for root, dirs, files in os.walk(folder):
         for filename in files:
             if filename.endswith(".py"):
-                # Obtenemos el nombre del módulo sin `.py`
-                module_name = filename[:-3]
-                # Obtenemos la ruta completa del archivo
-                module_path = os.path.join(root, filename)
+                module_name = filename[:-3]  # Nombre del módulo sin `.py`
+                module_path = os.path.join(root, filename)  # Ruta completa del archivo
 
-                # Cargamos y ejecutamos el módulo
                 spec = importlib.util.spec_from_file_location(module_name, module_path)
                 module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
+
+                try:
+                    spec.loader.exec_module(module)  # Carga y ejecuta el módulo sin almacenarlo
+                    # print(f"✅ Módulo cargado: {module_name}")  
+                except Exception as e:
+                    print(f"❌ Error al cargar {module_name}: {e}")
+

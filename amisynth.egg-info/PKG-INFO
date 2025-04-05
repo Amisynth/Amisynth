@@ -1,10 +1,10 @@
 Metadata-Version: 2.4
 Name: Amisynth
-Version: 0.1.0
-Summary: Descripción de mi paquete
-Home-page: https://github.com/tu_usuario/mi_paquete
+Version: 0.2.7
+Summary: Crea tu bot de discord sin saber programar!
+Home-page: https://github.com/Amisynth/Amisynth
 Author: Amisinth
-Author-email: tuemail@dominio.com
+Author-email: amisynth@gmail.com
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
@@ -13,6 +13,8 @@ Description-Content-Type: text/markdown
 Requires-Dist: discord.py
 Requires-Dist: asyncio
 Requires-Dist: xfox
+Requires-Dist: youtube_search
+Requires-Dist: yt-dlp
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier
@@ -30,7 +32,7 @@ Amisynth es un paquete para integrar funciones personalizadas en Discord.
 ![PyPI](https://img.shields.io/pypi/v/amisynth)
 [![PyPI Downloads](https://static.pepy.tech/badge/amisynth)](https://pepy.tech/projects/amisynth)
 ![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)
-![Docs](https://img.shields.io/badge/docs-passing-brightgreen)
+[![Docs](https://img.shields.io/badge/docs-passing-brightgreen)](https://amisynth.github.io/AmisynthDocs/)
 
 
 ## Instalación

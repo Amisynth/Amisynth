@@ -1,42 +1,26 @@
 import discord
 import xfox
-from Amisynth.utils import mensaje_id_global
-
+import Amisynth.utils as utils
 
 @xfox.addfunc(xfox.funcs)
 async def sendMessage(texto, retornar_id="false", canal_id=None, *args, **kwargs): 
-    global mensaje_id_global  # Usar la variable global
+    n = utils.ContextAmisynth()
     
-    # Obtener el contexto adecuado
-    ctx_message_env = kwargs.get("ctx_message_env")
-    ctx_command = kwargs.get("ctx_command")
-    ctx_slash_env = kwargs.get("ctx_slash_env")
-    ctx_join_member_env = kwargs.get("ctx_join_member_env")
-    ctx_remove_member_env = kwargs.get("ctx_remove_member_env")
-
-
-    # Determinar el canal correcto
-    canal = None
-
-    if ctx_command and canal_id:
-        canal = ctx_command.bot.get_channel(int(canal_id))  # Obtener canal por ID
-    elif ctx_message_env:
-        canal = ctx_message_env.guild.get_channel(int(canal_id))
-    elif ctx_slash_env:
-        canal = ctx_slash_env.guild.get_channel(int(canal_id))
-    elif ctx_join_member_env:
-        canal = ctx_join_member_env.guild.get_channel(int(canal_id))
-    elif ctx_remove_member_env:
-        canal = ctx_remove_member_env.guild.get_channel(int(canal_id))
+    # Si no se pasa un canal_id, intenta obtenerlo desde el contexto
+    if canal_id is None:
+        canal = await n.get_channel(int(n.channel_id))  # Obtener el canal desde el contexto
+       
+    else:
+        canal = await n.get_channel(int(canal_id))  # Obtener el canal desde el ID pasado
+       
 
     # Verificar si el canal es válido antes de enviar el mensaje
     if isinstance(canal, discord.TextChannel):
         mensaje = await canal.send(texto)
         if str(retornar_id).lower() == "true":
-            mensaje_id_global = mensaje.id  # Guardar el ID del mensaje en la variable global
-            return mensaje.id
+            return mensaje.id  # Retorna el ID del mensaje si se solicita
         
-        return ""
-    
+        return ""  # Retorna una cadena vacía si no se necesita el ID
+
     print(f"No se encontró un canal válido para enviar el mensaje. Canal ID: {canal_id}")
     return None  # Indicar que falló el envío

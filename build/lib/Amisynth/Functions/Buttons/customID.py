@@ -1,10 +1,7 @@
 import xfox
 import discord
-
+import Amisynth.utils as utils
 @xfox.addfunc(xfox.funcs)
 async def customID(*args, **kwargs):
-    if "ctx_interaction_env" in kwargs:
-        interaction = kwargs["ctx_interaction_env"]
-        return interaction.data.get("custom_id")
-    
-    return ""
+    n = utils.ContextAmisynth().custom_id
+    return n

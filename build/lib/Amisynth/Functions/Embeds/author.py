@@ -2,7 +2,7 @@ import xfox
 from Amisynth.utils import embeds  # Asumo que embeds es una lista global que estás usando
 
 @xfox.addfunc(xfox.funcs)
-async def author(texto: str, indice: int = 1, *args, **kwargs):
+async def author(texto: str=None, indice: int = 1, *args, **kwargs):
     """
     Guarda un autor en la lista de embeds, con el texto del autor y un índice opcional.
     Si se especifica el índice, se inserta o actualiza en esa posición. Si no, se agrega en la posición 1.
@@ -10,6 +10,8 @@ async def author(texto: str, indice: int = 1, *args, **kwargs):
     :param texto: El texto que se quiere mostrar como autor en el embed.
     :param indice: El índice opcional del embed (posición en la lista).
     """
+    if texto is None:
+        raise ValueError(f":x: Error el texto de author esta vacio")
     # Crear el embed con el texto del autor
     embed = {
         "author": texto,  # Solo el texto del autor

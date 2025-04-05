@@ -2,7 +2,7 @@ import xfox
 from Amisynth.utils import embeds  # Asumo que embeds es una lista global que estás usando
 
 @xfox.addfunc(xfox.funcs, name="addField")
-async def add_field(nombre: str, valor: str, inline: bool = False, indice: int = 1, *args, **kwargs):
+async def add_field(nombre: str=None, valor: str=None, inline: bool = False, indice: int = 1, *args, **kwargs):
     """
     Agrega un campo (field) a un embed en la lista de embeds.
     Si el embed en el índice especificado ya existe, se agrega el field a su lista de fields.
@@ -13,6 +13,12 @@ async def add_field(nombre: str, valor: str, inline: bool = False, indice: int =
     :param inline: Si el campo es inline o no (por defecto, True).
     :param indice: Índice del embed en la lista (por defecto, 1).
     """
+    if nombre is None:
+        raise ValueError(":x: Error argumento primero de `$addField[?;..]` vacio")
+    
+    if valor is None:
+        raise ValueError(":x: Error argumento segundo de `$addField[..;?]` vacio")
+    
 
     # Buscar si ya existe un embed con ese índice
     for i, item in enumerate(embeds):

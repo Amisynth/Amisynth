@@ -10,6 +10,10 @@ async def titleURL(url: str, indice: int = 1, *args, **kwargs):
     :param url: La URL que se quiere asociar al título del embed.
     :param indice: El índice opcional del embed (posición en la lista).
     """
+
+    if url is None:
+        print("[DEBUG TITLE] La funciom $titleURL[?;..] esta vicia")
+        raise ValueError(":x: Error en `$titleURL[?;..]` esta vacio")
     # Crear el embed con la URL en el título
     embed = {
         "title_url": url,  # URL asociada al título

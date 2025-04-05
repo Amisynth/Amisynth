@@ -2,7 +2,7 @@ import xfox
 from Amisynth.utils import embeds  # Asumo que embeds es una lista global que estás usando
 
 @xfox.addfunc(xfox.funcs)
-async def authorURL(url: str, indice: int = 1, *args, **kwargs):
+async def authorURL(url: str=None, indice: int = 1, *args, **kwargs):
     """
     Guarda un autor con ícono en la lista de embeds, con la URL del ícono y un índice opcional.
     Si se especifica el índice, se inserta o actualiza en esa posición. Si no, se agrega en la posición 1.
@@ -10,6 +10,8 @@ async def authorURL(url: str, indice: int = 1, *args, **kwargs):
     :param url: La URL del ícono que se quiere mostrar en el autor del embed.
     :param indice: El índice opcional del embed (posición en la lista).
     """
+    if url is None:
+        raise ValueError(":x: Error argumento primero de `$authorURL[?;..]` vacio.")
     # Crear el embed con el autor y el ícono
     embed = {
         "author_url": url,  # URL del ícono en el autor
